@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Restaurant List</h1>
+<ul>
+    {% if object_list %}
+    {% for obj in object_list %}
+        <li>
+            {{ obj }}
+        </li>
+    {% endfor %}
+    {% else %}
+        <h5> No Restaurent Available</h5>
+    {% endif %}
+
+</ul>
+{% endblock content %}
