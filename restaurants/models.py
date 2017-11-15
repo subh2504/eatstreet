@@ -24,6 +24,7 @@ class Restaurant(models.Model):
 def rl_pre_save_receiver(sender,instance,*args,**kwargs):
     print("Saving...")
     print(instance.timestamp)
+    print(instance)
     if not instance.slug:
         instance.slug=unique_slug_generator(instance)
         instance.save()

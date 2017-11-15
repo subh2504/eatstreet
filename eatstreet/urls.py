@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from restaurants.views import home, about, contact, restaurant_listview, RestaurantListView, RestaurantDetailView
+from restaurants.views import home, about, contact, restaurant_listview, RestaurantListView, RestaurantDetailView,restaurant_createview,RestaurentCreateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,9 +24,10 @@ urlpatterns = [
     url(r'^about/', about),
     url(r'^contact/', contact),
     url(r'^restaurant/$', RestaurantListView.as_view()),
-    #url(r'^restaurant/(?P<slug>\w+)/$', RestaurantListView.as_view()),
+    url(r'^restaurant/create/$', RestaurentCreateView.as_view()),
+    url(r'^restaurant/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
     #url(r'^restaurant/(?P<pk>\w+)/$', RestaurantDetailView.as_view()),
-    url(r'^restaurant/(?P<rest_id>\w+)/$', RestaurantDetailView.as_view()),
+    #url(r'^restaurant/(?P<rest_id>\w+)/$', RestaurantDetailView.as_view()),
 
 
 ]
