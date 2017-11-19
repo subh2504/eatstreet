@@ -13,9 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
-
+from django.contrib.auth.views import LoginView,LogoutView
 from restaurants.views import home, about, contact, restaurant_listview, RestaurantListView, RestaurantDetailView,restaurant_createview,RestaurentCreateView
 
 urlpatterns = [
@@ -23,11 +23,8 @@ urlpatterns = [
     url(r'^$',home),
     url(r'^about/', about),
     url(r'^contact/', contact),
-    url(r'^restaurant/$', RestaurantListView.as_view()),
-    url(r'^restaurant/create/$', RestaurentCreateView.as_view()),
-    url(r'^restaurant/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
-    #url(r'^restaurant/(?P<pk>\w+)/$', RestaurantDetailView.as_view()),
-    #url(r'^restaurant/(?P<rest_id>\w+)/$', RestaurantDetailView.as_view()),
+    url(r'^restaurant/', include('restaurants.urls')),
 
-
+    url(r'^login/$', LoginView.as_view(),name='login'),
+    url(r'^logout/$', LogoutView.as_view(),name='logout'),
 ]

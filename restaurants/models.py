@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 
 # Create your models here.
 from django.db.models.signals import pre_save,post_save
@@ -7,6 +9,7 @@ from restaurants.utils import unique_slug_generator
 
 
 class Restaurant(models.Model):
+    owner=models.ForeignKey(User)
     name=models.CharField(max_length=120)
     location=models.CharField(max_length=120,null=True,blank=True)
     timestamp=models.DateTimeField(auto_now_add=True)
