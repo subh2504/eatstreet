@@ -47,6 +47,11 @@ class RestaurentCreateView(LoginRequiredMixin,CreateView):
         instance.owner=self.request.user
         return super(RestaurentCreateView,self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context=super(RestaurentCreateView,self).get_context_data(**kwargs)
+        context['title']='Add Restaurant'
+        return context
+
 
 
 class RestaurantListView(ListView):

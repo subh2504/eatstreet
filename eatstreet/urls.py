@@ -23,7 +23,8 @@ urlpatterns = [
     url(r'^$',home),
     url(r'^about/', about),
     url(r'^contact/', contact),
-    url(r'^restaurant/', include('restaurants.urls')),
+    url(r'^restaurant/', include('restaurants.urls' , namespace='restaurants')),
+    url(r'^items/', include('menus.urls', namespace='menus')),
 
     url(r'^login/$', LoginView.as_view(),name='login'),
     url(r'^logout/$', LogoutView.as_view(),name='logout'),
