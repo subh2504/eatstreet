@@ -1,6 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ object.name }}</h1>
-<p>{{ object.timestamp }},Updated {{ object.updated|timesince }} ago</p>
+<h1>{{ restaurant.name }}</h1>
+<p>{{ restaurant.timestamp }},Updated {{ restaurant.updated|timesince }} ago</p>
+
+
+
+<ul>
+    {% for item in object %}
+    <li>
+        {{ item.name }} | {{ item.avg_rating|floatformat:1 }} | {{ item.total_rating }}
+            <ul>
+                {% for review in item.review_set.all %}
+                    <li>
+                        {{ review.user }} | {{ review.rating }} | {{ review.review}}
+                    </li>
+                {% endfor %}
+            </ul>
+    </li>
+    {% endfor %}
+</ul>
+
 {% endblock content %}

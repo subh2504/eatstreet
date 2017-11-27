@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 
-from restaurants.views import home, about, contact, restaurant_listview, RestaurantListView, RestaurantDetailView,restaurant_createview,RestaurentCreateView
+from restaurants.views import home, about, contact, restaurant_listview, RestaurantListView, RestaurantDetailView,RestaurentCreateView
 
 urlpatterns = [
     url(r'^$', RestaurantListView.as_view(),name='list'),

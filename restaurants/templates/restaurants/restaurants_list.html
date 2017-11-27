@@ -4,10 +4,24 @@
 <h1>Restaurant List</h1>
 <ul>
     {% if object_list %}
-    {% for obj in object_list %}
+    {% for obj,i in object_list %}
         <li>
-            <a href="/restaurant/{{ obj.slug }}/">{{ obj }}</a>
+            <a href="/restaurant/{{ obj.slug }}/">{{ obj.name }}</a>
         </li>
+            <ul>
+                {% for item in i %}
+                <li>
+                    {{ item.name }} | {{ item.avg_rating|floatformat:1 }} | {{ item.total_rating }}
+                        <ul>
+                            {% for review in item.review_set.all %}
+                                <li>
+                                    {{ review.user }} | {{ review.rating }} | {{ review.review}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </li>
+                {% endfor %}
+            </ul>
     {% endfor %}
     {% else %}
         <h5> No Restaurent Available</h5>

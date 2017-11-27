@@ -14,9 +14,10 @@ class ItemForm(forms.ModelForm):
         fields=[
             'restaurant',
             'name',
-            'contents',
+            'category',
+            'type',
             'public'
         ]
-    def __init__(self,user=None,*args,**kwargs):
-        super(ItemForm,self).__init__(*args,**kwargs)
-        self.fields['restaurant'].queryset=Restaurant.objects.filter(owner=user)
+    # def __init__(self,user=None,*args,**kwargs):
+    #     super(ItemForm,self).__init__(*args,**kwargs)
+    #     self.fields['restaurant'].queryset=Restaurant.objects.filter(owner=user)

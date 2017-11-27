@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Prefetch, Avg, F, Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.views.generic import ListView, DetailView, CreateView
 
+from menus.models import Review
 from restaurants.forms import RestaurantCreateForm
 from .models import Restaurant
 
@@ -57,27 +58,45 @@ class RestaurentCreateView(LoginRequiredMixin,CreateView):
 class RestaurantListView(ListView):
     template_name = 'restaurants/restaurants_list.html'
     def get_queryset(self):
-        slug=self.kwargs.get("slug")
-        if slug:
-            queryset=Restaurant.objects.filter(Q(category_iexact=slug)|Q(category_icontains=slug))
-        else:
-            queryset=Restaurant.objects.all()
-        return queryset
+        #r=Restaurant.objects.filter(active=True).prefetch_related(Prefetch('item_set',to_attr='items'))
+
+        r=Restaurant.objects.all().prefetch_related('item_set').all()
+        i=[]
+        for rest in r:
+            print(rest)
+            i.append(rest.item_set.annotate(avg_rating = Avg('review__rating'),total_rating=Count('review')))
+        print(list(r),list(i))# i=[]
+        # for item in r:
+        #     print(item.items)
+        #     i.append(item.items.all.annotate(avgrating=Avg('review__rating')))
+        # #i=Restaurant.objects.filter(active=True).prefetch_related(Prefetch('item_set',to_attr='items'))
+        # print(i)
+        return zip(r,i)
 
 
 class RestaurantDetailView(DetailView):
     queryset = Restaurant.objects.all()
-
-    # def get_context_data(self, **kwargs):
-    #     print(self.kwargs)
-    #     context = super(RestaurantDetailView,self).get_context_data(**kwargs)
-    #     print(context)
-    #     return context
+    template_name='restaurants/restaurant_detail.html'
+    # def get_queryset(self):
     #
-    # def get_object(self, *args,**kwargs):
-    #     rest_id=self.kwargs.get('rest_id')
-    #     obj=get_object_or_404(Restaurant,id=rest_id)
-    #     return obj
+    #     print(queryset)
+    #     return queryset
+
+    def get_context_data(self, **kwargs):
+
+        context = super(RestaurantDetailView,self).get_context_data(**kwargs)
+        #print(context['object'][0])
+
+        context['restaurant'] = context['object'][1]
+        context['object'] = context['object'][0]
+        return context
+
+    def get_object(self, queryset=None):
+        obj = super(RestaurantDetailView, self).get_object(queryset=queryset)
+        obj1=obj.item_set.annotate(avg_rating = Avg('review__rating'),total_rating=Count('review'))
+        #print(obj)
+        #print(obj1)
+        return [list(obj1),obj]
 
 
 
